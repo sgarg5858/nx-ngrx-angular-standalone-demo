@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@demo-angular-ngrx/posts/data-access": [
+        "libs/posts/data-access/src/index.ts"
+      ],
+      "@demo-angular-ngrx/posts/feature": ["libs/posts/feature/src/index.ts"],
+      "@demo-angular-ngrx/posts/ui": ["libs/posts/ui/src/index.ts"],
+      "@demo-angular-ngrx/users/data-access": [
+        "libs/users/data-access/src/index.ts"
+      ],
+      "@demo-angular-ngrx/users/feature": ["libs/users/feature/src/index.ts"],
+      "@demo-angular-ngrx/users/ui": ["libs/users/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
