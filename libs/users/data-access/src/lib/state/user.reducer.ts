@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { User } from "../models/user";
+import { User } from '@demo-angular-ngrx/users/domain'
 import { AllUsersApiActions,AllUsersPageActions } from "./user.actions";
 
 export const USER_FEATURE_KEY='users';

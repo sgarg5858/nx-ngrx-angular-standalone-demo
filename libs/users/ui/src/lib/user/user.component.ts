@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '@demo-angular-ngrx/users/data-access';
+import { User } from '@demo-angular-ngrx/users/domain';
 
 @Component({
   selector: 'demo-angular-ngrx-user',

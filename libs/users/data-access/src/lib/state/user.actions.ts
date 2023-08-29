@@ -1,5 +1,5 @@
 import {createActionGroup, emptyProps, props} from '@ngrx/store'
-import { User } from '../models/user';
+import { User } from '@demo-angular-ngrx/users/domain'
 export const AllUsersPageActions = createActionGroup({
     source:'All User Page',
     events:{

@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects'
 import { UserService } from "../user.service";
 import { AllUsersApiActions, AllUsersPageActions } from "./user.actions";
 import { catchError, concatMap, map, of } from "rxjs";
-import { User } from "../models/user";
+import { User } from '@demo-angular-ngrx/users/domain'
 @Injectable()
 export class UserEffects{
     constructor(
