@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { User } from '@demo-angular-ngrx/users/data-access';
 
 @Component({
   selector: 'demo-angular-ngrx-user',
@@ -8,4 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent {}
+export class UserComponent {
+
+  @Input() user:User|undefined;
+}

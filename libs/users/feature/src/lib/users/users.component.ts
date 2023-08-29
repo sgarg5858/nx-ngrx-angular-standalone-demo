@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { AllUsersPageActions } from '@demo-angular-ngrx/users/data-access';
+import { UserComponent } from '@demo-angular-ngrx/users/ui';
+import { UserFacade } from '../user-facade.service';
 
 @Component({
   selector: 'demo-angular-ngrx-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,UserComponent],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent  implements OnInit{
 
-  constructor(private store:Store){}
+  constructor(public readonly userFacade:UserFacade){}
+
+  
   ngOnInit(): void {
       //Just intent , no need to directly communicate to external services,
       // via services.
-      this.store.dispatch(AllUsersPageActions.loadAllUsers());
+      this.userFacade.loadAllUsers();
   }
 }

@@ -1,1 +1,1 @@
-export * from './lib/users-ui/users-ui.component';
+export * from './lib/user/user.component'

@@ -1,1 +1,13 @@
-<p>users works!</p>
+<ng-container *ngIf="userFacade.loadingAllUsers$ | async">
+    Loading Users.....
+</ng-container>
+
+<ng-container *ngIf="userFacade.errorInLoadingAllUsers$ | async">
+    Couldn't load users right now, Please try again.
+</ng-container>
+
+<ng-container *ngIf="userFacade.allUsers$ | async as allUsers">
+    <demo-angular-ngrx-user [user]="user" *ngFor="let user of allUsers">
+
+    </demo-angular-ngrx-user>
+</ng-container>
