@@ -9,6 +9,7 @@ import {provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
 import {provideRouterStore, routerReducer} from '@ngrx/router-store';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,10 +17,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideHttpClient(),
     provideStore({
-      router:routerReducer
+        router: routerReducer
     }),
     provideRouterStore(),
     provideEffects(),
-    provideStoreDevtools({maxAge:23,logOnly:!isDevMode})
-  ],
+    provideStoreDevtools({ maxAge: 23, logOnly: !isDevMode }),
+    provideAnimations()
+],
 };

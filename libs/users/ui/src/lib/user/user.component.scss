@@ -1,9 +1,13 @@
 .user{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     border: 1px solid black;
     width: 300px;
     margin: 8px;
+}
+
+mat-card-actions{
+    margin-left: auto;
 }

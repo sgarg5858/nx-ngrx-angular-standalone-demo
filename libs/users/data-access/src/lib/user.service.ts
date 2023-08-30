@@ -12,4 +12,8 @@ export class UserService {
   {
     return this.httpClient.get<User[]>('https://jsonplaceholder.typicode.com/users')
   }
+  getUserDetails(userId:string)
+  {
+    return this.httpClient.get<User>(`https://jsonplaceholder.typicode.com/users/${userId}`)
+  }
 }

@@ -4,6 +4,7 @@ import { UsersComponent } from './users/users.component'
 import { provideState } from '@ngrx/store'
 import { usersFeatureState,UserEffects } from '@demo-angular-ngrx/users/data-access'
 import { provideEffects } from '@ngrx/effects'
+import { UserDetailComponent } from './user-detail/user-detail.component'
 export const USER_ROUTES:Route[]=[
     {
         path:'',
@@ -16,6 +17,10 @@ export const USER_ROUTES:Route[]=[
             {
                 path:'',
                 component:UsersComponent
+            },
+            {
+                path:'user/detail/:userId',
+                component:UserDetailComponent
             }
         ]
     }

@@ -1,0 +1,13 @@
+<ng-container *ngIf="userFacade.loadingUserDetails$ | async">
+    Loading User Details ...
+</ng-container>
+
+<ng-container *ngIf="userFacade.errorInLoadingUserDetails$ | async">
+    Couldn't load user details right now, Please try again.
+</ng-container>
+
+<ng-container *ngIf="userFacade.userDetails$ | async as user">
+{{
+    user | json
+}}
+</ng-container>
