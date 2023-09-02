@@ -1,15 +1,44 @@
-<ng-container *ngIf="userFacade.loadingUserDetails$ | async">
-    Loading User Details ...
+
+
+
+<ng-container *ngIf="userFacade.userDetails$ | async as user;else notFound">
+    <mat-card class="user">
+        <mat-card-header>
+            <mat-card-title>{{user.username}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="info">
+                <span class="key">Name:</span> 
+                <span class="value">{{user.name}}</span>
+            </div>
+            <div class="info">
+                <span class="key">Email:</span> 
+                <span class="value">{{user.email}}</span>
+            </div>
+            <div class="info">
+                <span class="key">Website:</span> 
+                <span class="value">{{user.website}}</span>
+            </div>
+            <div class="info">
+                <span class="key">Phone:</span> 
+                <span class="value">{{user.phone}}</span>
+            </div>
+            <div class="info">
+                <span class="key">Company:</span> 
+                <span class="value">{{user.company.name}}</span>
+            </div>
+            <div class="info">
+                <span class="key">Address:</span> 
+                <span class="value">{{user.address | transformAddress}}</span>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+        <button mat-button (click)="goBack()" color="primary">Go back</button>
+        <button mat-button color="primary">Checkout posts</button>
+        </mat-card-actions>
+    </mat-card>
 </ng-container>
 
-
-
-<ng-container *ngIf="userFacade.userDetails$ | async as user">
-{{
-    user | json
-}}
-</ng-container>
-
-<ng-container *ngIf="userFacade.errorInLoadingUserDetails$ | async">
-    Couldn't load user details right now, Please try again.
-</ng-container>
+<ng-template #notFound>
+    Couldn't find details for this user
+</ng-template>    

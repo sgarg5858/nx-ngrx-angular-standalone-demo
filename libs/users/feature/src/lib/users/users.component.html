@@ -1,12 +1,12 @@
-<ng-container *ngIf="userFacade.loadingAllUsers$ | async">
+<ng-container *ngIf="userFacade.loadingUsers$ | async ">
     Loading Users.....
 </ng-container>
 
-<ng-container *ngIf="userFacade.errorInLoadingAllUsers$ | async">
+<ng-container *ngIf="userFacade.errorInLoadingUsers$ | async">
     Couldn't load users right now, Please try again.
 </ng-container>
 
-<ng-container *ngIf="userFacade.allUsers$ | async as allUsers">
+<ng-container *ngIf="userFacade.users$ | async as allUsers">
     <demo-angular-ngrx-user (showDetails)="showUserDetails($event)" [user]="user" *ngFor="let user of allUsers">
 
     </demo-angular-ngrx-user>

@@ -1,124 +1,54 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
 import { User } from '@demo-angular-ngrx/users/domain'
-import { AllUsersApiActions,AllUsersPageActions, UserDetailAPIActions, UserDetailPageActions } from "./user.actions";
-import { loadingAllUsers } from "./user.selectors";
+import { UserPageActions,UserApiActions } from "./user.actions";
 
-export const USER_FEATURE_KEY='users';
-
+export const USER_FEATURE_KEY='USER';
+export enum LOAD_STATUS {
+    'LOADING','LOADED','NOT_LOADED'
+} ;
 export interface UserState{
-    loadingAllUsers:boolean|null;
-    users:User[]|null;
+    loadStatus:LOAD_STATUS;
+    users:User[];
     errorInLoadingAllUsers:string|null;
-
-    loadingUserDetails:boolean|null;
-    currentUserDetails:User|null;
-    errorInLoadingUserDetails:string|null;
 }
 export const initialUserState:UserState={
-    loadingAllUsers:null,
-    users:null,
+    loadStatus:LOAD_STATUS.NOT_LOADED,
+    users:[],
     errorInLoadingAllUsers:null,
 
-    currentUserDetails:null,
-    loadingUserDetails:null,
-    errorInLoadingUserDetails:null,
 }
 export const userReducer = createReducer(
     initialUserState,
 
-    on(AllUsersPageActions.loadAllUsers,
+    on(UserPageActions.loadUsers,
         (state)=> 
         ({
             ...state,
-            loadingAllUsers:true,
-            users:null,
+            users:[],
+            loadStatus:LOAD_STATUS.LOADING,
             errorInLoadingAllUsers:null,
-            currentUserDetails:null,
-            loadingUserDetails:null,
-            errorInLoadingUserDetails:null
         })
     ),
 
-    on(AllUsersApiActions.success,
-        (state,action)=> 
+    on(UserApiActions.success,
+        (state,{users})=> 
         ({
             ...state,
-            loadingAllUsers:false,
-            users:action.users,
+            loadStatus:LOAD_STATUS.LOADED,
+            users:[...users],
             errorInLoadingAllUsers:null,
-            currentUserDetails:null,
-            loadingUserDetails:null,
-            errorInLoadingUserDetails:null
         })
     ),
 
-    on(AllUsersApiActions.failed,
-        (state,action)=> 
+    on(UserApiActions.failed,
+        (state,{error})=> 
         ({
             ...state,
-            loadingAllUsers:false,
-            users:null,
-            errorInLoadingAllUsers:action.error,
-            currentUserDetails:null,
-            loadingUserDetails:null,
-            errorInLoadingUserDetails:null
-        })
-    ),
-    on(UserDetailPageActions.loadUserDetails,
-        (state)=> 
-        ({
-            ...state,
-            loadingAllUsers:null,
-            users: state.users ?[...state.users] : null,
-            errorInLoadingAllUsers:null,
-            currentUserDetails:null,
-            loadingUserDetails:true,
-            errorInLoadingUserDetails:null
-        })
-    ),
-    on( 
-        UserDetailAPIActions.userDetailsAlreadyPresentInStore
-        ,
-        (state,action)=> 
-        ({
-            ...state,
-            loadingAllUsers:null,
-            users: state.users ?[...state.users] : null,
-            errorInLoadingAllUsers:null,
-            currentUserDetails:action.userDetails,
-            loadingUserDetails:false,
-            errorInLoadingUserDetails:null
-        })
-    ),
-    on( 
-         UserDetailAPIActions.fetchUserDetailsViaAPISuccess
-        ,
-        (state,action)=> 
-        ({
-            ...state,
-            loadingAllUsers:null,
-            users: state.users ?[...state.users] : null,
-            errorInLoadingAllUsers:null,
-            currentUserDetails:action.userDetails,
-            loadingUserDetails:false,
-            errorInLoadingUserDetails:null
-        })
-    ),
-    on( 
-        UserDetailAPIActions.fetchUserDetailsViaAPIError
-        ,
-        (state,action)=> 
-        ({
-            ...state,
-            loadingAllUsers:null,
-            users: state.users ?[...state.users] : null,
-            errorInLoadingAllUsers:null,
-            currentUserDetails:null,
-            loadingUserDetails:false,
-            errorInLoadingUserDetails:action.error
+            loadStatus:LOAD_STATUS.NOT_LOADED,
+            users:[],
+            errorInLoadingAllUsers:error,
         })
     )
-
     
 )
 

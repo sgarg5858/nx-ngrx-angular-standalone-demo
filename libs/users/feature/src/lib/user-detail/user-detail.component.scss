@@ -1,0 +1,34 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+}
+mat-card{
+    width: 80vw;
+    min-height: 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+mat-card-actions{
+    margin-left: auto;
+}
+mat-card-content{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+}
+.info{
+    .key{
+        font-weight: 600;
+    }
+    .value{
+        margin-left: 1rem;
+    }
+}

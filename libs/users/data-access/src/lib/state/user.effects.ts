@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
-import {Actions, concatLatestFrom, createEffect, ofType} from '@ngrx/effects'
+import {Actions, createEffect, ofType} from '@ngrx/effects'
 import { UserService } from "../user.service";
-import { AllUsersApiActions, AllUsersPageActions, UserDetailAPIActions, UserDetailPageActions } from "./user.actions";
-import { catchError, concatMap, map, of, tap } from "rxjs";
+import { UserPageActions,UserApiActions } from "./user.actions";
+import { catchError, concatMap, exhaustMap, filter, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { User } from '@demo-angular-ngrx/users/domain'
 import { Store } from "@ngrx/store";
-import { allUsers, selectRouteParams } from "./user.selectors";
+import { fromUser } from "./user.selectors";
+import { LOAD_STATUS } from "./user.reducer";
 @Injectable()
 export class UserEffects{
     constructor(
@@ -13,38 +14,23 @@ export class UserEffects{
         private userService:UserService,
         private store:Store
         ){}
-
-        loadAllUsers$ = createEffect(()=> this.actions$.pipe(
-            ofType(AllUsersPageActions.loadAllUsers),
-            concatMap(()=> this.userService.getAllUsers().pipe(
-                map((users:User[])=> AllUsersApiActions.success({users})),
-                catchError(()=>of(AllUsersApiActions.failed({error:"Couldn't load all users"})))
-            ))
+        getUsers$= createEffect(()=>
+        this.actions$.pipe(
+            ofType(UserPageActions.getUsers),
+            concatMap((action)=>of(action).pipe(
+                withLatestFrom(this.store.select(fromUser.loadStatus))
+            )),
+            filter(([_,loadStatus])=> loadStatus===LOAD_STATUS.NOT_LOADED),
+            map(()=>UserPageActions.loadUsers())
         ))
 
-        checkUserDetailInStoreElseMakeApiCall$ = createEffect(()=> this.actions$.pipe(
-            ofType(UserDetailPageActions.loadUserDetails),
-            concatLatestFrom(() => this.store.select(allUsers)),
-            concatLatestFrom(() => this.store.select(selectRouteParams)),
-            map(([[_,allUsers],params])=>{
-                const userId=params['userId'];
-                console.log(userId,params,allUsers)
-                const userDetails = allUsers?.find((user)=>user.id==userId)
-                console.log()
-                if(userDetails)
-                this.store.dispatch(UserDetailAPIActions.userDetailsAlreadyPresentInStore({userDetails}));
-                else 
-                this.store.dispatch(UserDetailAPIActions.fetchUserDetailsViaAPI({userId}));
-
-            })
-        ),{dispatch:false})
-
-        loadUserDetails$ = createEffect(()=> this.actions$.pipe(
-            ofType(UserDetailAPIActions.fetchUserDetailsViaAPI),
-            concatMap((action)=> this.userService.getUserDetails(action.userId).pipe(
-                map((userDetails:User)=> UserDetailAPIActions.fetchUserDetailsViaAPISuccess({userDetails})),
-                catchError(()=>of(UserDetailAPIActions.fetchUserDetailsViaAPIError({error:"Couldn't load user details "})))
-            ))
-            
-        ),{dispatch:true})
+        loadUsers$= createEffect(()=>
+        this.actions$.pipe(
+            ofType(UserPageActions.loadUsers),
+            exhaustMap(()=> this.userService.getUsers().pipe(
+                map((users:User[])=>UserApiActions.success({users})),
+                catchError(()=> of(UserApiActions.failed({error:"Couldn't load users right now, Please try again"})))
+                )
+            )
+        ))
 }

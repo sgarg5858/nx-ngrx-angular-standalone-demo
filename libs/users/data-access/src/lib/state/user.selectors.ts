@@ -1,36 +1,38 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { USER_FEATURE_KEY, UserState } from "./user.reducer";
 import { getRouterSelectors } from "@ngrx/router-store";
+import { Params } from "@angular/router";
+import { User } from "../..";
 
 export const {
     selectRouteParams
 } = getRouterSelectors();
 
-export const selectUserState = createFeatureSelector<UserState>(USER_FEATURE_KEY);
+const selectUserState = createFeatureSelector<UserState>(USER_FEATURE_KEY);
 
-export const loadingAllUsers = createSelector(
+const loadStatus = createSelector(
     selectUserState,
-    (state:UserState)=>state.loadingAllUsers
+    (state:UserState)=>state.loadStatus
 )
 
-export const allUsers = createSelector(
+const users = createSelector(
     selectUserState,
     (state:UserState)=>state.users
 )
-export const errorInLoadingAllUsers = createSelector(
+const errorInLoadingUsers = createSelector(
     selectUserState,
     (state:UserState)=>state.errorInLoadingAllUsers
 )
 
-export const userDetails = createSelector(
-    selectUserState,
-    (state:UserState)=>state.currentUserDetails
+const userDetails = createSelector(
+    users,
+    selectRouteParams,
+    (users:User[],params:Params)=>{
+        const userId=params['userId'];
+       return userId && users ? users.find((user)=>user.id == userId) : null
+    }
 )
-export const loadingUserDetails = createSelector(
-    selectUserState,
-    (state:UserState)=>state.loadingUserDetails
-)
-export const errorInLoadingUserDetails = createSelector(
-    selectUserState,
-    (state:UserState)=>state.errorInLoadingUserDetails
-)
+
+export const fromUser ={
+    loadStatus,users,errorInLoadingUsers,userDetails
+}

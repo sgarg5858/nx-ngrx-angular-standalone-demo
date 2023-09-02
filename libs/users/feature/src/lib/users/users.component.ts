@@ -24,7 +24,7 @@ export class UsersComponent  implements OnInit{
   ngOnInit(): void {
       //Just intent , no need to directly communicate to external services,
       // via services.
-      this.userFacade.loadAllUsers();
+      this.userFacade.getUsers();
   }
   showUserDetails(user:User)
   {
