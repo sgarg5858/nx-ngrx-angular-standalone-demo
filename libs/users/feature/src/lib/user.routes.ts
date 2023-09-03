@@ -5,6 +5,7 @@ import { provideState } from '@ngrx/store'
 import { usersFeatureState,UserEffects } from '@demo-angular-ngrx/users/data-access'
 import { provideEffects } from '@ngrx/effects'
 import { UserDetailComponent } from './user-detail/user-detail.component'
+import { UserDataGuard } from './user-data-guard'
 export const USER_ROUTES:Route[]=[
     {
         path:'',
@@ -13,6 +14,7 @@ export const USER_ROUTES:Route[]=[
             provideState(usersFeatureState),
             provideEffects([UserEffects])
         ],
+        canActivate:[UserDataGuard],
         children:[
             {
                 path:'',

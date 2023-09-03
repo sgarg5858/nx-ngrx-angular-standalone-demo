@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserFacade } from '../user-facade.service';
 import { MatCardModule } from '@angular/material/card';
@@ -13,16 +13,12 @@ import {  ActivatedRoute, Router } from '@angular/router';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
 })
-export class UserDetailComponent implements OnInit{
+export class UserDetailComponent {
   constructor(
     public readonly userFacade:UserFacade,
     private router : Router,
     private activatedRoute:ActivatedRoute
     ){}
-
-  ngOnInit(): void {
-      this.userFacade.getUsers();
-  }
   goBack()
   {
     this.router.navigate(['../../../'],{relativeTo:this.activatedRoute})
